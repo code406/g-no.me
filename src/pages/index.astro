@@ -4,6 +4,13 @@ import Layout from "@/layouts/Layout.astro";
 import { Github } from "lucide-astro";
 ---
 
+<script>
+	const audio = new Audio("/woo.mp3");
+	document.getElementById("shortenButton")?.addEventListener("click", () => {
+		audio.play();
+	});
+</script>
+
 <Layout title="Gnome URL Shortener">
 	<article>
 		<header>
@@ -26,7 +33,7 @@ import { Github } from "lucide-astro";
 					placeholder="https://example.com"
 				/>
 			</label>
-			<button id="sendButton" type="submit">Make it short</button>
+			<button id="shortenButton" type="submit">Make it short</button>
 		</form>
 		<footer>
 			<a
