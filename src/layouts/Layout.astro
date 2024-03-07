@@ -1,4 +1,6 @@
 ---
+import ThemeProvider from "@/components/ThemeProvider.astro";
+
 interface Props {
 	title: string;
 }
@@ -10,42 +12,35 @@ const { title } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
+		<meta
+			name="description"
+			content="g-no.me (Gnome): a URL shortener with a twist"
+		/>
 		<meta name="viewport" content="width=device-width" />
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+		/>
+		<link rel="stylesheet" href="/styles.css" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<meta content="#af1d38" name="theme-color" />
 		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<ThemeProvider />
+		<main class="container">
+			<slot />
+		</main>
 	</body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
+
+<style>
+	body {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: calc(100svh - 1rem);
+		margin: 0;
 	}
 </style>
