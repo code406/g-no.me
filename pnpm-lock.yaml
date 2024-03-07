@@ -11,6 +11,9 @@ dependencies:
   astro:
     specifier: ^4.4.13
     version: 4.4.13(typescript@5.4.2)
+  lucide-astro:
+    specifier: ^0.349.0
+    version: 0.349.0(astro@4.4.13)
   typescript:
     specifier: ^5.4.2
     version: 5.4.2
@@ -2002,6 +2005,14 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+    dev: false
+
+  /lucide-astro@0.349.0(astro@4.4.13):
+    resolution: {integrity: sha512-f/w2wCh9xCuy9HBnkKRKnKm40ZCEKhAtU+923VmD/GRLWPcF+/96Qne2BvQpfGuhQNRlNlmuV0C12cbpHM2w3A==}
+    peerDependencies:
+      astro: '>=2.7.1'
+    dependencies:
+      astro: 4.4.13(typescript@5.4.2)
     dev: false
 
   /magic-string@0.30.8:
