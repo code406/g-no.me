@@ -2,6 +2,18 @@
 import ThemeToggle from "@/components/ThemeToggle.astro";
 import Layout from "@/layouts/Layout.astro";
 import { Github } from "lucide-astro";
+
+if (Astro.request.method === "POST") {
+	try {
+		const data = await Astro.request.formData();
+		const url = data.get("url")?.toString() || "";
+		new URL(url);
+		console.log("Input URL: ", url);
+		// API call
+	} catch (error) {
+		console.error(error);
+	}
+}
 ---
 
 <script>
@@ -22,14 +34,14 @@ import { Github } from "lucide-astro";
 			</a>
 			<h5>a URL shortener with a twist</h5>
 		</header>
-		<form id="form" autocomplete="off">
+		<form method="POST" id="form" autocomplete="off">
 			<label>
 				<span class="help-text">Enter a URL</span>
 				<input
 					required
 					type="url"
-					id="input_url"
-					name="input_url"
+					id="url"
+					name="url"
 					placeholder="https://example.com"
 				/>
 			</label>
