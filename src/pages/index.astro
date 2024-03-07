@@ -7,7 +7,6 @@ import { Github } from "lucide-astro";
 <script>
 	const audio = new Audio("/woo.mp3");
 	const form = document.forms.namedItem("url-form");
-	const button = document.getElementById("shortenButton");
 
 	function playAudio() {
 		return new Promise((res) => {
@@ -16,11 +15,14 @@ import { Github } from "lucide-astro";
 		});
 	}
 
-	function formSubmit() {
-		form?.checkValidity() && playAudio().then(() => form.submit());
-	}
-
-	button?.addEventListener("click", formSubmit);
+	form?.addEventListener("submit", (event) => {
+		event.preventDefault();
+		form?.checkValidity() &&
+			playAudio().then(() => {
+				console.log("Input URL: ", form.url.value);
+				form.reset();
+			});
+	});
 </script>
 
 <Layout title="Gnome URL Shortener">
