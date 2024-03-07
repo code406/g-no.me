@@ -1,0 +1,82 @@
+:root {
+	--pico-border-radius: 0.375rem;
+    --pico-border-width: 2px;
+}
+
+@media only screen and (min-width: 768px) {
+	:root {
+		--pico-font-size: 110%;
+	}
+}
+
+article {
+	border: var(--pico-border-width) solid var(--pico-card-border-color);
+}
+
+
+[data-theme=light],
+:root:not([data-theme=dark]) {
+  --pico-primary: #c9363c;
+  --pico-primary-background: #c9363c;
+  --pico-primary-underline: rgba(197, 33, 63, 0.5);
+  --pico-primary-hover: #097bc2;
+  --pico-primary-hover-background: #af1d38;
+  --pico-primary-focus: rgba(240, 72, 86, 0.5);
+  --pico-primary-inverse: #fff;
+  
+  --pico-display-moon: none;
+  --pico-display-sun: block;
+}
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --pico-primary: #fb505f;
+    --pico-primary-background: #af1d38;
+    --pico-primary-underline: rgba(241, 97, 104, 0.5);
+    --pico-primary-hover: #79bbfd;
+    --pico-primary-hover-background: #d9263b;
+    --pico-primary-focus: rgba(241, 97, 114, 0.375);
+    --pico-primary-inverse: #fff;
+    
+    --pico-display-moon: block;
+    --pico-display-sun: none;
+  }
+}
+[data-theme=dark] {
+    --pico-primary: #fb505f;
+    --pico-primary-background: #af1d38;
+    --pico-primary-underline: rgba(241, 97, 104, 0.5);
+    --pico-primary-hover: #79bbfd;
+    --pico-primary-hover-background: #d9263b;
+    --pico-primary-focus: rgba(241, 97, 114, 0.375);
+    --pico-primary-inverse: #fff;
+    
+    --pico-display-moon: block;
+    --pico-display-sun: none;
+}
+
+input,
+select,
+textarea {
+    transition: none;
+    outline: var(--pico-outline-width) solid var(--pico-border-color);
+    border-width: 1px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-width: 1px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
