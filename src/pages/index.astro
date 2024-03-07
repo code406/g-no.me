@@ -18,9 +18,21 @@ if (Astro.request.method === "POST") {
 
 <script>
 	const audio = new Audio("/woo.mp3");
-	document.getElementById("shortenButton")?.addEventListener("click", () => {
-		audio.play();
-	});
+	const form = document.forms.namedItem("url-form");
+	const button = document.getElementById("shortenButton");
+
+	function playAudio() {
+		return new Promise((res) => {
+			audio.onended = res;
+			audio.play();
+		});
+	}
+
+	function formSubmit() {
+		form?.checkValidity() && playAudio().then(() => form.submit());
+	}
+
+	button?.addEventListener("click", formSubmit);
 </script>
 
 <Layout title="Gnome URL Shortener">
@@ -34,7 +46,7 @@ if (Astro.request.method === "POST") {
 			</a>
 			<h5>a URL shortener with a twist</h5>
 		</header>
-		<form method="POST" id="form" autocomplete="off">
+		<form method="POST" id="url-form" autocomplete="off">
 			<label>
 				<span class="help-text">Enter a URL</span>
 				<input
@@ -42,6 +54,7 @@ if (Astro.request.method === "POST") {
 					type="url"
 					id="url"
 					name="url"
+					maxlength="2048"
 					placeholder="https://example.com"
 				/>
 			</label>
