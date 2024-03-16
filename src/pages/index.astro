@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import { Github, ArrowLeft, Copy, Check } from "lucide-astro";
 import { db, ShortUrl } from "astro:db";
 
-var insertedId: number | null = null;
+var insertedId = 0;
 
 const baseURL = import.meta.env.DEV
 	? "http://localhost:4321"
@@ -26,7 +26,7 @@ if (Astro.request.method === "POST") {
 }
 ---
 
-<script is:inline>
+<script>
 	const audio = new Audio("/woo.mp3");
 	function playAudio() {
 		return new Promise((res) => {
@@ -36,24 +36,35 @@ if (Astro.request.method === "POST") {
 	}
 
 	const form = document.forms.namedItem("url-form");
-	form?.addEventListener("submit", async (event) => {
+	form?.addEventListener("submit", (event) => {
 		event.preventDefault();
-		if (form.checkValidity()) {
-			await playAudio();
-			form.submit();
-		}
+		form.checkValidity() &&
+			playAudio().then(() => {
+				form.submit();
+			});
 	});
 
-	async function copyToClipboard() {
-		await navigator.clipboard.writeText(
-			document.getElementById("shortened-url").getAttribute("value"),
-		);
-		document.getElementById("copy-icon").hidden = true;
-		document.getElementById("check-icon").hidden = false;
-		await new Promise((res) => setTimeout(res, 3000));
-		document.getElementById("copy-icon").hidden = false;
-		document.getElementById("check-icon").hidden = true;
-	}
+	const copyButton = document.getElementById("copybtn");
+	copyButton?.addEventListener("click", () => {
+		const url = document
+			.getElementById("shortened-url")
+			?.getAttribute("value");
+		url && navigator.clipboard.writeText(url);
+		const copyIcon = document.getElementById("copy-icon");
+		const copiedIcon = document.getElementById("copied-icon");
+		const copyText = document.getElementById("copy-text");
+		const copiedText = document.getElementById("copied-text");
+		copyIcon?.setAttribute("hidden", "true");
+		copyText?.setAttribute("hidden", "true");
+		copiedIcon?.removeAttribute("hidden");
+		copiedText?.removeAttribute("hidden");
+		setTimeout(() => {
+			copyIcon?.removeAttribute("hidden");
+			copyText?.removeAttribute("hidden");
+			copiedIcon?.setAttribute("hidden", "true");
+			copiedText?.setAttribute("hidden", "true");
+		}, 4000);
+	});
 </script>
 
 <Layout title="Gnome URL Shortener">
@@ -75,33 +86,7 @@ if (Astro.request.method === "POST") {
 
 		<main>
 			{
-				insertedId ? (
-					<div class="success">
-						<label for="shortened-url">Shortened URL</label>
-						<fieldset role="group">
-							<input
-								type="text"
-								id="shortened-url"
-								name="shortened-url"
-								value={`${baseURL}/${insertedId}`}
-								readonly
-							/>
-							<button
-								id="copybtn"
-								type="button"
-								class="outline"
-								onclick="copyToClipboard(this)"
-							>
-								<Copy size="20" class="copy-icon" />
-								<Check size="20" class="check-icon" hidden />
-							</button>
-						</fieldset>
-						<a href="/" class="back-link">
-							<ArrowLeft size="20" />
-							Shorten another URL
-						</a>
-					</div>
-				) : (
+				insertedId === 0 ? (
 					<form method="POST" id="url-form" autocomplete="off">
 						<label>
 							<span class="help-text">Enter a URL</span>
@@ -118,6 +103,31 @@ if (Astro.request.method === "POST") {
 							Make it short
 						</button>
 					</form>
+				) : (
+					<div class="success">
+						<label for="shortened-url">Shortened URL</label>
+						<fieldset role="group">
+							<input
+								type="text"
+								id="shortened-url"
+								name="shortened-url"
+								value={`${baseURL}/${insertedId}`}
+								readonly
+							/>
+							<button id="copybtn" type="button">
+								<Copy size="20" id="copy-icon" />
+								<Check size="20" id="copied-icon" hidden />
+								<span id="copy-text">Copy</span>
+								<span id="copied-text" hidden>
+									Copied!
+								</span>
+							</button>
+						</fieldset>
+						<a href="/" class="back-link">
+							<ArrowLeft size="20" />
+							Shorten another URL
+						</a>
+					</div>
 				)
 			}
 		</main>
@@ -153,6 +163,21 @@ if (Astro.request.method === "POST") {
 		form button {
 			font-weight: bold;
 			width: 100%;
+		}
+		[role="group"] button {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 8.5rem;
+			padding-inline: 0;
+			gap: 0.75rem;
+			cursor: pointer;
+			outline: 1px solid var(--pico-border-color);
+			font-weight: 500;
+		}
+		button:hover,
+		button:focus {
+			box-shadow: none;
 		}
 		article main {
 			padding: 1rem 1rem 0.5rem;
