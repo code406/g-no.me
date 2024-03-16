@@ -1,16 +1,16 @@
 :root {
-	--pico-border-radius: 0.375rem;
+    --pico-border-radius: 0.375rem;
     --pico-border-width: 2px;
 }
 
 @media only screen and (min-width: 768px) {
-	:root {
-		--pico-font-size: 110%;
-	}
+    :root {
+        --pico-font-size: 110%;
+    }
 }
 
 article {
-	border: var(--pico-border-width) solid var(--pico-card-border-color);
+    border: var(--pico-border-width) solid var(--pico-card-border-color);
 }
 
 

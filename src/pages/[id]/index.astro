@@ -1,0 +1,43 @@
+---
+import { eq } from "astro:db";
+import { db, ShortUrl } from "astro:db";
+import Layout from "@/layouts/Layout.astro";
+
+var url = "/";
+try {
+    const id = parseInt(Astro.params.id!);
+    const query = await db.select().from(ShortUrl).where(eq(ShortUrl.id, id));
+    url = query[0].url;
+} catch (e) {
+    console.error(e);
+}
+
+const pageTitle = `Redirecting to ${url} ✨`;
+---
+
+<script define:vars={{ url }}>
+    const audio = new Audio("/woo.mp3");
+    function playAudio() {
+        return new Promise((res) => {
+            audio.onended = res;
+            audio.play();
+        });
+    }
+
+    document.addEventListener("click", async () => {
+        await playAudio();
+        location.assign(url);
+    });
+</script>
+
+<Layout title={pageTitle}>
+    <article class="center">Tap anywhere to be redirected</article>
+
+    <style>
+        .center {
+            margin: 0 auto;
+            text-align: center;
+            width: fit-content;
+        }
+    </style>
+</Layout>
