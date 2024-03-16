@@ -1,6 +1,5 @@
 ---
-import { eq } from "astro:db";
-import { db, ShortUrl } from "astro:db";
+import { db, eq, ShortUrl } from "astro:db";
 import Layout from "@/layouts/Layout.astro";
 
 var url = "/";
@@ -15,7 +14,7 @@ try {
 const pageTitle = `Redirecting to ${url} ✨`;
 ---
 
-<script define:vars={{ url }}>
+<script define:vars={{ url }} is:inline>
     const audio = new Audio("/woo.mp3");
     function playAudio() {
         return new Promise((res) => {
