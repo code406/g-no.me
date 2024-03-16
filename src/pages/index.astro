@@ -1,8 +1,12 @@
 ---
-import ThemeToggle from "@/components/ThemeToggle.astro";
 import Layout from "@/layouts/Layout.astro";
-import { Github, ArrowLeft, Copy, Check } from "lucide-astro";
 import { db, ShortUrl } from "astro:db";
+
+import Card from "@/components/Card.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import BackLink from "@/components/BackLink.astro";
+import CopyButton from "@/components/CopyButton.astro";
 
 var insertedId = 0;
 
@@ -43,192 +47,68 @@ if (Astro.request.method === "POST") {
 				form.submit();
 			});
 	});
-
-	const copyButton = document.getElementById("copybtn");
-	copyButton?.addEventListener("click", () => {
-		const url = document
-			.getElementById("shortened-url")
-			?.getAttribute("value");
-		url && navigator.clipboard.writeText(url);
-		const copyIcon = document.getElementById("copy-icon");
-		const copiedIcon = document.getElementById("copied-icon");
-		const copyText = document.getElementById("copy-text");
-		const copiedText = document.getElementById("copied-text");
-		copyIcon?.setAttribute("hidden", "true");
-		copyText?.setAttribute("hidden", "true");
-		copiedIcon?.removeAttribute("hidden");
-		copiedText?.removeAttribute("hidden");
-		setTimeout(() => {
-			copyIcon?.removeAttribute("hidden");
-			copyText?.removeAttribute("hidden");
-			copiedIcon?.setAttribute("hidden", "true");
-			copiedText?.setAttribute("hidden", "true");
-		}, 4000);
-	});
 </script>
 
 <Layout title="Gnome URL Shortener">
-	<article>
-		<header>
-			<a href="/">
-				<div class="header-link">
-					<img
-						src="/favicon.svg"
-						alt="Logo"
-						width="150"
-						height="150"
-					/>
-					<h1>g-no.me</h1>
-				</div>
-			</a>
-			<h5>a URL shortener with a twist</h5>
-		</header>
-
+	<Card>
+		<Header />
 		<main>
 			{
 				insertedId === 0 ? (
 					<form method="POST" id="url-form" autocomplete="off">
-						<label>
-							<span class="help-text">Enter a URL</span>
-							<input
-								required
-								type="url"
-								id="url"
-								name="url"
-								maxlength="2048"
-								placeholder="https://example.com"
-							/>
-						</label>
-						<button id="shortenButton" type="submit">
-							Make it short
-						</button>
+						<label for="url">Enter a URL</label>
+						<input
+							required
+							type="url"
+							id="url"
+							name="url"
+							maxlength="2048"
+							placeholder="https://example.com"
+						/>
+						<button type="submit">Make it short</button>
 					</form>
 				) : (
-					<div class="success">
-						<label for="shortened-url">Shortened URL</label>
-						<fieldset role="group">
-							<input
-								type="text"
-								id="shortened-url"
-								name="shortened-url"
-								value={`${baseURL}/${insertedId}`}
-								readonly
-							/>
-							<button id="copybtn" type="button">
-								<Copy size="20" id="copy-icon" />
-								<Check size="20" id="copied-icon" hidden />
-								<span id="copy-text">Copy</span>
-								<span id="copied-text" hidden>
-									Copied!
-								</span>
-							</button>
-						</fieldset>
-						<a href="/" class="back-link">
-							<ArrowLeft size="20" />
-							Shorten another URL
-						</a>
-					</div>
+					<>
+						<div>
+							<label for="short">Shortened URL</label>
+							<fieldset role="group">
+								<input
+									type="text"
+									id="short"
+									name="short"
+									value={`${baseURL}/${insertedId}`}
+									readonly
+								/>
+								<CopyButton
+									text={`${baseURL}/${insertedId}`}
+									copiedIndicatorId="copied-indicator"
+								/>
+							</fieldset>
+							<div id="copied-indicator" hidden>
+								Copied!
+							</div>
+						</div>
+						<BackLink />
+					</>
 				)
 			}
 		</main>
-
-		<footer>
-			<a
-				href="https://github.com/code406/g-no.me"
-				class="icon-link"
-				title="Github Repo"
-				aria-label="Github Repo"
-			>
-				<Github alt="Github" />
-			</a>
-			<ThemeToggle />
-		</footer>
-	</article>
-
-	<style>
-		header a {
-			text-decoration: none;
-		}
-		header {
-			text-align: center;
-			padding: 1.5rem 1rem 1rem;
-		}
-		.back-link {
-			display: flex;
-			align-items: center;
-			text-decoration: none;
-			gap: 0.5rem;
-			padding-top: 0.5rem;
-		}
-		form button {
-			font-weight: bold;
-			width: 100%;
-		}
-		[role="group"] button {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			min-width: 8.5rem;
-			padding-inline: 0;
-			gap: 0.75rem;
-			cursor: pointer;
-			outline: 1px solid var(--pico-border-color);
-			font-weight: 500;
-		}
-		button:hover,
-		button:focus {
-			box-shadow: none;
-		}
-		article main {
-			padding: 1rem 1rem 0.5rem;
-		}
-		form {
-			display: flex;
-			flex-direction: column;
-			gap: 0.5rem;
-		}
-		.help-text {
-			display: block;
-			padding-bottom: 0.5rem;
-		}
-		article {
-			max-width: 600px;
-			margin: auto;
-		}
-		footer {
-			color: var(--pico-secondary);
-			display: flex;
-			opacity: 0.75;
-			gap: 1.5rem;
-			justify-content: end;
-			align-items: center;
-			padding: 1.25rem 2rem 1rem;
-		}
-		.icon-link {
-			color: var(--pico-secondary);
-			text-decoration: none;
-			margin: 0;
-			padding: 0.25rem 0.25rem 0.5rem;
-		}
-		@media (max-height: 700px), (max-width: 375px) {
-			.header-link img {
-				max-width: 100px;
-			}
-		}
-		@media (max-height: 700px) and (min-width: 400px) {
-			.header-link {
-				display: flex;
-				flex-direction: row;
-				justify-content: center;
-				align-items: end;
-			}
-			.header-link img {
-				margin-right: 0.5rem;
-				max-width: 100px;
-			}
-			.header-link h1 {
-				padding-bottom: 0.25rem;
-			}
-		}
-	</style>
+		<Footer />
+	</Card>
 </Layout>
+
+<style>
+	main {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-self: center;
+		min-height: 230px;
+	}
+	#copied-indicator {
+		text-align: end;
+		margin-right: 0.25rem;
+		font-weight: 500;
+		color: var(--pico-primary);
+	}
+</style>

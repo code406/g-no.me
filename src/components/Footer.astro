@@ -1,0 +1,34 @@
+---
+import { Github } from "lucide-astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+---
+
+<footer>
+    <a
+        href="https://github.com/code406/g-no.me"
+        class="icon-link"
+        title="Github Repo"
+        aria-label="Github Repo"
+    >
+        <Github alt="Github" />
+    </a>
+    <ThemeToggle />
+</footer>
+
+<style>
+    footer {
+        color: var(--pico-secondary);
+        display: flex;
+        opacity: 0.75;
+        gap: 1.5rem;
+        justify-content: end;
+        align-items: center;
+        padding: 1.25rem 2rem 1rem;
+    }
+    .icon-link {
+        color: var(--pico-secondary);
+        text-decoration: none;
+        margin: 0;
+        padding: 0.25rem 0.25rem 0.5rem;
+    }
+</style>

@@ -1,6 +1,7 @@
 ---
 import { db, eq, ShortUrl } from "astro:db";
 import Layout from "@/layouts/Layout.astro";
+import Card from "@/components/Card.astro";
 
 var url = "/";
 try {
@@ -30,10 +31,17 @@ const pageTitle = `Redirecting to ${url} ✨`;
 </script>
 
 <Layout title={pageTitle}>
-    <article class="center">Tap anywhere to be redirected</article>
+    <Card class="center">
+        <main>
+            Seems <strong>you were gnomed</strong> on your way to
+            <a href={url}>{url}</a><br /><br />
+            Wanna go there now? <strong>Click anywhere</strong> to be redirected.
+        </main>
+    </Card>
 
     <style>
         .center {
+            padding: 1.5rem 2rem;
             margin: 0 auto;
             text-align: center;
             width: fit-content;

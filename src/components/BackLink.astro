@@ -1,0 +1,21 @@
+---
+import { ArrowLeft } from "lucide-astro";
+
+const { url = "/", text = "Back" } = Astro.props;
+---
+
+<a href={url}>
+    <ArrowLeft size="20" />
+    {text}
+</a>
+
+<style>
+    a {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        text-decoration: none;
+        gap: 0.5rem;
+        padding-top: 1rem;
+    }
+</style>

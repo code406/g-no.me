@@ -1,0 +1,39 @@
+<header>
+    <a href="/">
+        <div class="header-link">
+            <img src="/favicon.svg" alt="Logo" width="150" height="150" />
+            <h1>g-no.me</h1>
+        </div>
+    </a>
+    <h5>a URL shortener with a twist</h5>
+</header>
+
+<style>
+    header {
+        text-align: center;
+        padding: 1.5rem 1rem 1rem;
+    }
+    header a {
+        text-decoration: none;
+    }
+    @media (max-height: 700px), (max-width: 375px) {
+        .header-link img {
+            max-width: 100px;
+        }
+    }
+    @media (max-height: 700px) and (min-width: 400px) {
+        .header-link {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: end;
+        }
+        .header-link img {
+            margin-right: 0.5rem;
+            max-width: 100px;
+        }
+        .header-link h1 {
+            padding-bottom: 0.25rem;
+        }
+    }
+</style>

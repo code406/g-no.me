@@ -1,0 +1,40 @@
+---
+import { Copy, Check } from "lucide-astro";
+
+interface Props {
+    text: string;
+    copiedIndicatorId?: string;
+}
+const { text, copiedIndicatorId } = Astro.props;
+---
+
+<button type="button">
+    <Copy size="20" id="copy-icon" />
+    <Check size="20" id="copied-icon" hidden />
+
+    <script define:vars={{ text, copiedIndicatorId }}>
+        document.querySelector("button")?.addEventListener("click", () => {
+            navigator.clipboard.writeText(text);
+
+            const copyIcon = document.getElementById("copy-icon");
+            const copiedIcon = document.getElementById("copied-icon");
+            const copiedIndicator = document.getElementById(copiedIndicatorId);
+
+            copyIcon?.setAttribute("hidden", "true");
+            copiedIcon?.removeAttribute("hidden");
+            copiedIndicator?.removeAttribute("hidden");
+
+            setTimeout(() => {
+                copyIcon?.removeAttribute("hidden");
+                copiedIcon?.setAttribute("hidden", "true");
+                copiedIndicator?.setAttribute("hidden", "true");
+            }, 5000);
+        });
+    </script>
+</button>
+
+<style>
+    button {
+        padding-inline: 1.25rem;
+    }
+</style>
