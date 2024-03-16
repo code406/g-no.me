@@ -16,9 +16,5 @@
         "src/utils/index.ts"
       ],
     }
-  },
-  "include": [
-    "*.ts",
-    "src/**/*.astro"
-  ]
+  }
 }
